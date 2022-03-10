@@ -1,0 +1,1 @@
+﻿(1..254) | % {$ip="10.10.10.$_"; Write-output "$IP  $(test-connection -computername "$ip" -quiet -count 1)  $( Resolve-DnsName $ip -ErrorAction Ignore |select -exp NameHost )  "}
