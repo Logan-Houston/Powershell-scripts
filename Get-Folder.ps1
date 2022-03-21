@@ -1,4 +1,5 @@
-﻿Function Get-Folder($initialDirectory="")
+Add-Type -AssemblyName System.Windows.Forms
+Function Get-Folder($initialDirectory="")
 
 {
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")|Out-Null
