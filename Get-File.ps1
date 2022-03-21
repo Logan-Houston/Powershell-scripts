@@ -1,4 +1,5 @@
-﻿function Select-File {
+Add-Type -AssemblyName System.Windows.Forms
+function Select-File {
 
     [CmdletBinding()]
 
