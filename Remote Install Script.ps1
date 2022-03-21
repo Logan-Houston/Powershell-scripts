@@ -102,7 +102,7 @@ Foreach($Computer in $Computers){
        }#End of IF
        Else{Write-host $Computer "Offline" -ForegroundColor Yellow}
     }#End of Foreach
-
-    Get-Job | Wait-job; Write-Host "Wrapping up installs..." -ForegroundColor Cyan
+    Write-host "Wrapping up installs..." -foregroundColor Cyan
+    Get-Job | Wait-job
 
     Stop-Transcript
