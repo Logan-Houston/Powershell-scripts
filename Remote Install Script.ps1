@@ -2,6 +2,7 @@
 ##Written by A1C Logan Houston 366CS/SCOO ##
 
 #Custom function to get file path using windows explorer
+Add-Type -AssemblyName System.Windows.Forms
 Function Get-Folder($initialDirectory="")
 
 {
