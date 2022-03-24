@@ -90,7 +90,7 @@ Foreach($Computer in $Computers){
        Get-service -ComputerName $Computer -Servicename WinRM |Start-Service
        #Checks if Temp folder exists, if not creates it
        $Temp = test-path -Path \\$Computer\C$\Temp
-       If($Temp = $True){}
+       If($Temp -eq $True){}
        Else{Invoke-command -ScriptBlock {New-Item -path C:\ -Name "Temp" -ItemType directory}}
        #Copies the entire SDC folder we designated to the Temp folder
        Robocopy $Folder "\\$Computer\C$\Temp" /s /r:1 | Out-null
