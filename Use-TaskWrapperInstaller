@@ -1,0 +1,31 @@
+#scheduled task wrapper for installing files which normally fail due to 
+#windows restrictions on invoke-command
+function Use-TaskWrapperInstaller {
+    param(
+        [string]$ffile,
+        [string]$farguments,
+        [string]$ftaskname,
+        [string]$ftempDir,
+        [string]$fadmin,
+        [string]$fpassword
+    )
+    Invoke-Command -Session $Global:s -ScriptBlock {
+        $action=$(New-ScheduledTaskAction -Execute "$Using:ftempDir\$Using:ffile" -Argument $Using:farguments)
+        $principal=$(New-ScheduledTaskPrincipal -GroupId "BUILTIN\Administrators" -RunLevel Highest)
+        $settings=$(New-ScheduledTaskSettingsSet)
+        $task=(New-ScheduledTask -Action $action -Principal $principal -Settings $settings)
+        Set-Location "$Using:ftempDir"
+        if ($(Get-ScheduledTask -TaskName "$Using:ftaskname" -ErrorAction SilentlyContinue).State -eq "Ready") {
+                    Unregister-ScheduledTask -TaskName "$Using:ftaskname" -Confirm:$false
+                }
+        Register-ScheduledTask -TaskName "$Using:ftaskname" -InputObject $task -User "$Using:fadmin" -Password "$Using:fpassword" -ErrorAction SilentlyContinue -Force
+        Start-Sleep -Seconds "2"
+        Write-Host "Starting installation task: $Using:ftaskname"
+        Start-ScheduledTask -TaskName "$Using:ftaskname"
+        Start-Sleep -Seconds "2"
+        Do {
+            Start-Sleep -Seconds "1"
+        } Until ($(Get-ScheduledTask -TaskName "$Using:ftaskname" -ErrorAction SilentlyContinue).State -match "Ready")
+        Write-Host "Installation of $Using:ftaskname using Task Wrapper complete."
+    }
+}
