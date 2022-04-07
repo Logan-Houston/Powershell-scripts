@@ -1,4 +1,4 @@
-﻿##SDC Remote Installer Script v 1.0 ##
+##SDC Remote Installer Script v 1.0 ##
 ##Written by A1C Logan Houston 366CS/SCOO ##
 
 #Custom function to get file path using windows explorer
@@ -67,7 +67,7 @@ function Select-File {
 }
 
 #Variables to designate the computers to target and the folder with the SDC
-$File = Write-host "Please select .txt file with list of computers" -ForegroundColor Cyan | Select-File
+$File = Write-host "Please select .txt or .csv file with list of computers" -ForegroundColor Cyan | Select-File
 $Folder = Write-host "Please select folder of SDC you want to install" -ForegroundColor Cyan | Get-Folder
 $Computers = get-content $file
 $Foldername = split-path $folder -leaf
@@ -91,18 +91,20 @@ Foreach($Computer in $Computers){
        #Checks if Temp folder exists, if not creates it
        $Temp = test-path -Path \\$Computer\C$\Temp
        If($Temp -eq $True){}
-       Else{Invoke-command -ScriptBlock {New-Item -path C:\ -Name "Temp" -ItemType directory}}
+       Else {New-Item -path \\$Computer\C$ -Name "Temp" -ItemType directory}
+
        #Copies the entire SDC folder we designated to the Temp folder
-       Robocopy $Folder "\\$Computer\C$\Temp" /s /r:1 | Out-null
+       Robocopy $Folder "\\$Computer\C$\Temp" /s /r:1 | Out-Null
         
        Write-host $Computer "SDC Copied" -ForegroundColor Green
        #Starts the install command on the remote computer as a job
        Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process -wait -filepath "C:\Temp\$Foldername\Install.cmd"} -asjob
-       Write-host $computer "Installation Started" -ForegroundColor Green
+       Write-host $Computer "Installation Started" -ForegroundColor Green
        }#End of IF
        Else{Write-host $Computer "Offline" -ForegroundColor Yellow}
     }#End of Foreach
-    Write-host "Wrapping up installs..." -foregroundColor Cyan
+    
+    Write-Host "Wrapping up installs..." -ForegroundColor Cyan
     Get-Job | Wait-job
 
     Stop-Transcript
