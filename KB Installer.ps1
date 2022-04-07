@@ -1,4 +1,4 @@
-﻿##KB Remote Installer Script v 1.0 ##
+##KB Remote Installer Script v 1.0 ##
 ##Written by A1C Logan Houston 366CS/SCOO ##
 
 #Custom function to get file path using windows explorer
@@ -92,7 +92,8 @@ Foreach($Computer in $Computers){
        #Checks if Temp folder exists, if not creates it
        $Temp = test-path -Path \\$Computer\C$\Temp
        If($Temp -eq $True){}
-       Else{Invoke-command -ScriptBlock {New-Item -path C:\ -Name "Temp" -ItemType directory}}
+       Else {New-Item -path \\$Computer\C$ -Name "Temp" -ItemType directory}
+       
        #Copies the Patch we designated to the Temp folder
        cp $Patch \\$Computer\C$\Temp  
         
