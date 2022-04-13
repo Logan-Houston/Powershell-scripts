@@ -94,7 +94,7 @@ Foreach($Computer in $Computers){
        Else {New-Item -path \\$Computer\C$ -Name "Temp" -ItemType directory}
 
        #Copies the entire SDC folder we designated to the Temp folder
-       Robocopy $Folder "\\$Computer\C$\Temp" /s /r:1 | Out-Null
+       cp $Folder "\\$Computer\C$\Temp" -recurse | Out-Null
         
        Write-host $Computer "SDC Copied" -ForegroundColor Green
        #Starts the install command on the remote computer as a job
