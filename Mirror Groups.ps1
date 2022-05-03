@@ -31,5 +31,4 @@ $user1 = $read1 + "*"
 $user2 = $read2 + "*"
 $Username1 = Get-ADUser -Filter "name -like '$User1'"  -SearchBase "Users OU goes here" -Properties MemberOf
 $Username2 = Get-ADUser -Filter "name -like '$User2'"  -SearchBase "Users OU goes here" -Properties MemberOf
-#Gets the group membership of the first user and adds to the second user
-$Groups1 = $Username1 | Select-Object -ExpandProperty MemberOf |Add-ADGroupMember -Members $Username2
+#Gets the group membership of the first user and adds to the second user$Username1 | Select-Object -ExpandProperty MemberOf |Add-ADGroupMember -Members $Username2
