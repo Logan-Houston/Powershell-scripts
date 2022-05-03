@@ -22,7 +22,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 #>
-
 #This script requires RSAT tools to be installed to function
 #Asks user for the names of the customers to copy to/from
 $Read1 = read-host "Please enter Last First of the person you want to copy the groups FROM"
@@ -30,6 +29,7 @@ $Read2 = read-host "Please enter Last First of the person you want to copy the g
 #adds a wildcard so that the user doen't need the FQN of the customer
 $user1 = $read1 + "*"
 $user2 = $read2 + "*"
+$Username1 = Get-ADUser -Filter "name -like '$User1'"  -SearchBase "Users OU goes here" -Properties MemberOf
+$Username2 = Get-ADUser -Filter "name -like '$User2'"  -SearchBase "Users OU goes here" -Properties MemberOf
 #Gets the group membership of the first user and adds to the second user
-$Groups1 = Get-ADUser -Filter 'name -like $User1'  -SearchBase "User Account OU Goes Here" -Properties Memberof | Select Memberof
-Get-aduser -Filter 'Name -Like $User2' |Add-ADPrincipalGroupMembership -MemberOf $Groups1
+$Groups1 = $Username1 | Select-Object -ExpandProperty MemberOf |Add-ADGroupMember -Members $Username2
