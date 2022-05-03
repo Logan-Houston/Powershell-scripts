@@ -31,5 +31,5 @@ $Read2 = read-host "Please enter Last First of the person you want to copy the g
 $user1 = $read1 + "*"
 $user2 = $read2 + "*"
 #Gets the group membership of the first user and adds to the second user
-$Groups1 = Get-ADUser -Filter 'name -like $User1'  -SearchBase "OU=Users,OU=PSAB,DC=psab,DC=centaf,DC=ds,DC=af,DC=mil" -Properties Memberof | Select Memberof
+$Groups1 = Get-ADUser -Filter 'name -like $User1'  -SearchBase "User Account OU Goes Here" -Properties Memberof | Select Memberof
 Get-aduser -Filter 'Name -Like $User2' |Add-ADPrincipalGroupMembership -MemberOf $Groups1
