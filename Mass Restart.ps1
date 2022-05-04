@@ -74,8 +74,9 @@ $File = Write-host "Please select .txt or .csv file with list of computers to re
 $computers = get-content $File
 
 #Sends a 5 minute warning to all the computers in the list then forces restart
-Foreach($Computer in $Computers){ 
-Invoke-command -computer $Computer {msg */Server:localhost "Your computer will restart in 5 minutes. Please save your work"} 
+Foreach($Computer in $Computers) {Invoke-Command -computer $Computer{ 
+msg */Server:localhost "Your computer will restart in 5 minutes. Please save your work" 
 start-sleep -Seconds 300
-Restart-computer -ComputerName $Computer -Force} -asjob
+Restart-computer -ComputerName $Computer -Force}-AsJob #End of Invoke 
+}#End of Foreach
 
