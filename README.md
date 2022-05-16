@@ -1,2 +1,2 @@
 # Powershell-scripts
-Collection of powershell scripts I have written, modified, or saved for later use
+Collection of powershell scripts I have written, or modified and saved for later use
